@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react"
 import { Router } from "@reach/router"
-import EditPage from '../components/editpage'
+import EditPage from "../components/editpage"
 
 export default function Post() {
   return (
