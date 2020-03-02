@@ -1,8 +1,9 @@
 import React from "react"
 import { css } from "@emotion/core"
-import { BlogContext } from '../context/mainContext'
+import { BlogContext } from "../context/mainContext"
 
 function MainLayout(props) {
+  console.log(props)
   const { children, noPadding, customCss = [] } = props
   let basePadding = css`
     padding-top: 35px;
@@ -15,17 +16,16 @@ function MainLayout(props) {
   }
   return (
     <div>
-      <main css={[mainContent, basePadding, ...customCss]}>{children}</main> 
+      <main css={[mainContent, basePadding, ...customCss]}>{children}</main>
     </div>
   )
 }
 
 function MainLayoutWithContext(props) {
+  console.log(props)
   return (
     <BlogContext.Consumer>
-      {
-        context => <MainLayout {...props} context={context} />
-      }
+      {context => <MainLayout {...props} context={context} />}
     </BlogContext.Consumer>
   )
 }

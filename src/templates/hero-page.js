@@ -1,14 +1,17 @@
-import React from 'react'
-import { css } from '@emotion/core'
+import React from "react"
+import { css } from "@emotion/core"
 
 export default function HeroPage(props) {
-  console.log('props:', props)
-  const { pageContext: { content} } = props
+  console.log("props:", props)
+  const {
+    pageContext: { content },
+  } = props
   return (
     <div css={container} className="hero-page-content">
+      <h1>Hero page</h1>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
- )
+  )
 }
 
 const container = css`

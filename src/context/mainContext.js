@@ -183,7 +183,7 @@ export {
 }
 
 const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}, height) => {
-  console.log('height: ', height)
+  // console.log('height: ', height)
   const isDark = type === ('dark' || 'dank' || 'reactive')
   // const isDank = type === 'dank'
   // const isLight = type === 'light'

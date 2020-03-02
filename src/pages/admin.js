@@ -20,6 +20,7 @@ import { graphql } from 'gatsby'
 import getSignedImage from '../utils/getSignedImage'
 
 class Admin extends React.Component {
+
   state = {
     isLoading: true,
     viewState: 'listPosts',
@@ -254,6 +255,7 @@ class Admin extends React.Component {
                 viewState === 'createPage' && (
                   <select css={selectMenu} value={pageTemplate} onChange={this.updatePageTemplate}>
                     <option value='hero'>Hero</option>
+                    {/* <option value="cta">CTA</option> */}
                   </select>
                 )
               }

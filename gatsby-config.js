@@ -16,7 +16,7 @@ module.exports = {
     description: `The full stack CMS built for the modern age.`,
     siteUrl: `https://github.com/jamstack-cms`,
     social: {
-      twitter: `dabit3`,
+      twitter: `dkapper01`,
     },
   },
   plugins: [

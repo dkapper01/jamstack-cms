@@ -1,38 +1,38 @@
-import React from 'react'
-import { css } from '@emotion/core'
-import {
-  ContextProviderComponent, BlogContext
-} from '../context/mainContext'
-import { Link } from 'gatsby'
-import { Auth, Hub } from 'aws-amplify'
-import logo from '../images/logo.png'
-import logoLight from '../images/logoLight.png'
-import logoDank from '../images/logoDank.png'
-import logoReactive from '../images/logoReactive.png'
+import React from "react"
+import { css } from "@emotion/core"
+import { ContextProviderComponent, BlogContext } from "../context/mainContext"
+import { Link } from "gatsby"
+import { Auth, Hub } from "aws-amplify"
+import logo from "../images/logo.png"
+import logoLight from "../images/logoLight.png"
+import logoDank from "../images/logoDank.png"
+import logoReactive from "../images/logoReactive.png"
 import "easymde/dist/easymde.min.css"
-import 'react-toastify/dist/ReactToastify.css'
+import "react-toastify/dist/ReactToastify.css"
 
 const titleCase = str =>
   str
-    .split('-')
+    .split("-")
     .map(str => {
       const word = str.toLowerCase()
       return word.charAt(0).toUpperCase() + word.slice(1)
     })
-    .join(' ')
+    .join(" ")
 
 class BaseLayout extends React.Component {
   state = {
-    user: null
+    user: null,
   }
   componentDidMount() {
     this.setUser()
-    Hub.listen('auth', hubData => {
-      const { payload: { event } } = hubData;
-      if (event === 'signOut') {
+    Hub.listen("auth", hubData => {
+      const {
+        payload: { event },
+      } = hubData
+      if (event === "signOut") {
         this.setState({ user: null })
       }
-      if (event === 'signIn') {
+      if (event === "signIn") {
         this.setUser()
       }
     })
@@ -41,31 +41,36 @@ class BaseLayout extends React.Component {
     try {
       const user = await Auth.currentAuthenticatedUser()
       this.setState({ user })
-     } catch (err) {
-       console.log('user not signed in...')
-     }
+    } catch (err) {
+      console.log("user not signed in...")
+    }
   }
   render() {
     const { user } = this.state
-    let { theme, window: { height }, isAdmin, slugs } = this.props.context
+    let {
+      theme,
+      window: { height },
+      isAdmin,
+      slugs,
+    } = this.props.context
     let { type: themeType } = theme
 
-    slugs = slugs === 'none' ? [] : slugs
+    slugs = slugs === "none" ? [] : slugs
 
     const dynamicContainerHeight = css`
       min-height: calc(${height}px - 157px);
     `
 
     let mainLogo = logo
-    if (themeType === 'dark') mainLogo = logoLight
-    if (themeType === 'dank') mainLogo = logoDank
-    if (themeType === 'reactive') mainLogo = logoReactive
-    return ( 
+    if (themeType === "dark") mainLogo = logoLight
+    if (themeType === "dank") mainLogo = logoDank
+    if (themeType === "reactive") mainLogo = logoReactive
+    return (
       <div>
         <div css={[headerStyle]}>
           <nav css={[headerContainerStyle]}>
             <Link to="/" css={linkContainer}>
-              <img alt='logo' css={logoStyle} src={mainLogo} />
+              <img alt="logo" css={logoStyle} src={mainLogo} />
             </Link>
             <div css={menu}>
               <Link to="/" css={linkContainer}>
@@ -74,47 +79,57 @@ class BaseLayout extends React.Component {
               <Link to="/about" css={linkContainer}>
                 <p css={[link(theme)]}>About Me</p>
               </Link>
-              {
-                isAdmin && (
-                  <Link to="/admin" css={linkContainer}>
-                    <p css={[link(theme)]}>Admin</p>
-                  </Link>
-                )
-              }
-              {
-                slugs.length > Number(0) && slugs.map((slug) => (
+              {isAdmin && (
+                <Link to="/admin" css={linkContainer}>
+                  <p css={[link(theme)]}>Admin</p>
+                </Link>
+              )}
+              {slugs.length > Number(0) &&
+                slugs.map(slug => (
                   <Link to={`/${slug}`} css={linkContainer}>
                     <p css={[link(theme)]}>{titleCase(slug)}</p>
                   </Link>
-                ))
-              }
+                ))}
             </div>
           </nav>
         </div>
         <main css={[dynamicContainerHeight]}>{this.props.children}</main>
         <footer css={footerContainer(theme)}>
           <div css={footer}>
-           <div css={footerLeft}>
-             © {new Date().getFullYear()}&nbsp;
-             <a css={footerLink(theme)} target="_blank" rel="noopener noreferrer" href="https://github.com/jamstack-cms" >JAMstack CMS</a>
-           </div>
-           <div css={footerRight}>
-              <div>
-                <a
+            <div css={footerLeft}>
+              © {new Date().getFullYear()}&nbsp;
+              <a
                 css={footerLink(theme)}
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://twitter.com/jamstackcms">Twitter</a>
+                href="https://github.com/jamstack-cms"
+              >
+                JAMstack CMS
+              </a>
+            </div>
+            <div css={footerRight}>
+              <div>
+                <a
+                  css={footerLink(theme)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://twitter.com/jamstackcms"
+                >
+                  Twitter
+                </a>
               </div>
               <div>
                 <a
-                css={footerLink(theme)}
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/jamstack-cms">GitHub</a>
+                  css={footerLink(theme)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/jamstack-cms"
+                >
+                  GitHub
+                </a>
               </div>
               <Link to="/profile" css={footerLink(theme)}>
-                { user ? "Profile" : "Sign In" }
+                {user ? "Profile" : "Sign In"}
               </Link>
             </div>
           </div>
@@ -128,9 +143,7 @@ function BaseLayoutWithContext(props) {
   return (
     <ContextProviderComponent>
       <BlogContext.Consumer>
-        {
-          context => <BaseLayout {...props} context={context} />
-        }
+        {context => <BaseLayout {...props} context={context} />}
       </BlogContext.Consumer>
     </ContextProviderComponent>
   )
@@ -138,7 +151,7 @@ function BaseLayoutWithContext(props) {
 
 const footerLink = ({ primaryFontColor, primaryLightFontColor }) => css`
   color: ${primaryLightFontColor};
-  transition: all .25s;
+  transition: all 0.25s;
   margin-right: 10px;
   &:hover {
     color: ${primaryFontColor};
@@ -170,7 +183,12 @@ const linkContainer = css`
   box-shadow: none;
 `
 
-const link = ({ fontFamily, baseFontWeight, primaryFontColor, primaryLightFontColor }) => css`
+const link = ({
+  fontFamily,
+  baseFontWeight,
+  primaryFontColor,
+  primaryLightFontColor,
+}) => css`
   margin-bottom: 0px;
   margin-top: 0px;
   margin-left: 15px;
@@ -178,7 +196,7 @@ const link = ({ fontFamily, baseFontWeight, primaryFontColor, primaryLightFontCo
   font-family: ${fontFamily}, sans-serif;
   font-weight: ${baseFontWeight};
   color: ${primaryLightFontColor};
-  transition: all .35s;
+  transition: all 0.35s;
   &:hover {
     color: ${primaryFontColor};
   }
@@ -198,8 +216,7 @@ const menu = css`
   }
 `
 
-const headerStyle = css`
-`
+const headerStyle = css``
 
 const headerContainerStyle = css`
   display: flex;
